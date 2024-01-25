@@ -1,0 +1,43 @@
+{
+  "name": "rtn-custom-app-browser",
+  "version": "0.0.1",
+  "description": "Open Browser with Turbo Native Modules",
+  "react-native": "js/index",
+  "source": "js/index",
+  "files": [
+    "js",
+    "android",
+    "ios",
+    "rtn-custom-app-browser.podspec",
+    "!android/build",
+    "!ios/build",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__"
+  ],
+  "keywords": [
+    "react-native",
+    "ios",
+    "android"
+  ],
+  "repository": "https://github.com/a4ord/rtn-custom-app-browser",
+  "author": "a4ord",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/a4ord/rtn-custom-app-browser/issues"
+  },
+  "homepage": "https://github.com/a4ord/rtn-custom-app-browser#readme",
+  "devDependencies": {},
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "codegenConfig": {
+    "name": "RTNCustomAppBrowserSpec",
+    "type": "modules",
+    "jsSrcsDir": "js",
+    "android": {
+      "javaPackageName": "com.rtninappbrowser"
+    }
+  }
+}
