@@ -7,4 +7,4 @@ export interface Spec extends TurboModule {
   close(): void;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>("RTNCustomAppBrowser") as Spec | null;
+export default TurboModuleRegistry.get<Spec>("RTNCustomAppBrowser") as Spec | null;

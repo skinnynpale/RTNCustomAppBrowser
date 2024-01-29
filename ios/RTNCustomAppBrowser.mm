@@ -15,12 +15,6 @@
 
 RCT_EXPORT_MODULE()
 
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params
-{
-    return std::make_shared<facebook::react::NativeCustomAppBrowserSpecJSI>(params);
-}
-
 - (void)open:(NSString *)url resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   dispatch_async(dispatch_get_main_queue(), ^{
     NSURL *URL = [NSURL URLWithString:url];
@@ -67,6 +61,12 @@ RCT_EXPORT_MODULE()
     self.resolveBlock(self.closeType);
     self.resolveBlock = nil;
   }
+}
+
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeCustomAppBrowserSpecJSI>(params);
 }
 
 @end
