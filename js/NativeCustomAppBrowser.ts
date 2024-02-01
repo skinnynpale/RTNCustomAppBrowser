@@ -3,7 +3,7 @@ import { TurboModule, TurboModuleRegistry } from "react-native";
 export type CloseType = "cancel" | "dismiss";
 
 export interface Spec extends TurboModule {
-  open(url: string, options?: {}): Promise<{}>;
+  open(url: string, options?: {}): Promise<CloseType>;
   close(): void;
 }
 

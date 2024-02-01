@@ -15,7 +15,7 @@
 
 RCT_EXPORT_MODULE()
 
-- (void)open:(NSString *)url resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+- (void)open:(NSString *)url options:(JS::NativeCustomAppBrowser::SpecOpenOptions &)options resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   dispatch_async(dispatch_get_main_queue(), ^{
     NSURL *URL = [NSURL URLWithString:url];
     if (URL) {
