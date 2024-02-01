@@ -8,13 +8,11 @@ buildscript {
   }
   dependencies {
     classpath("com.android.tools.build:gradle:7.3.1")
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.22")
   }
 }
 
 apply plugin: 'com.android.library'
 apply plugin: 'com.facebook.react'
-apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
   compileSdkVersion safeExtGet('compileSdkVersion', 33)
@@ -27,5 +25,28 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.facebook.react:react-native'
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation 'com.facebook.react:react-native:+'
+  def eventbusVersion = safeExtGet('eventbus', safeExtGet('eventbus', '3.3.1'))
+  implementation "org.greenrobot:eventbus:$eventbusVersion"
+  def supportLibVersion = safeExtGet('supportLibVersion', safeExtGet('supportVersion', null))
+  def androidXAnnotationVersion = safeExtGet('androidXAnnotationVersion', null)
+  def androidXBrowserVersion = safeExtGet('androidXBrowserVersion', null)
+  if (supportLibVersion) {
+    implementation "com.android.support:support-annotations:$supportLibVersion"
+    implementation "com.android.support:customtabs:$supportLibVersion"
+  } else {
+    def defaultAndroidXAnnotationVersion = "1.5.+"
+    def defaultAndroidXBrowserVersion = "1.4.+"
+    if (androidXAnnotationVersion == null) {
+      androidXAnnotationVersion = defaultAndroidXAnnotationVersion
+    }
+    if (androidXBrowserVersion == null) {
+      androidXBrowserVersion = defaultAndroidXBrowserVersion
+    }
+    def androidXAnnotation = safeExtGet('androidXAnnotation', androidXAnnotationVersion)
+    def androidXBrowser = safeExtGet('androidXBrowser', androidXBrowserVersion)
+    implementation "androidx.annotation:annotation:$androidXAnnotation"
+    implementation "androidx.browser:browser:$androidXBrowser"
+  }
 }

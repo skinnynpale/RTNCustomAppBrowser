@@ -1,24 +1,26 @@
 package com.rtncustomappbrowser;
 
+import android.app.Activity;
 import androidx.annotation.NonNull;
-import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.annotation.Nullable;
+
+import com.facebook.fbreact.specs.NativeCustomAppBrowserSpec;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-
-import android.app.Activity;
-import android.net.Uri;
-import com.facebook.fbreact.specs.NativeCustomAppBrowserSpec;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.LifecycleEventListener;
 
-public class CustomAppBrowserModule extends NativeCustomAppBrowserSpec implements LifecycleEventListener {
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
+
+public class CustomAppBrowserModule extends NativeCustomAppBrowserSpec  {
 
     public static String NAME = "RTNCustomAppBrowser";
+    private final ReactApplicationContext reactContext;
 
-    CustomAppBrowserModule(ReactApplicationContext context) {
-        super(context);
-        context.addLifecycleEventListener(this);
-    }
+    CustomAppBrowserModule(ReactApplicationContext reactContext) {
+    super(reactContext);
+    this.reactContext = reactContext;
+  }
 
     @Override
     @NonNull
@@ -26,43 +28,35 @@ public class CustomAppBrowserModule extends NativeCustomAppBrowserSpec implement
         return NAME;
     }
 
-    private Activity currentActivity;
-    private Promise promise;
 
-    @Override
-    public void open(String url, Promise promise) {
-        this.promise = promise;
-        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        CustomTabsIntent customTabsIntent = builder.build();
-        currentActivity = getCurrentActivity();
+  @ReactMethod
+  public void open(String url, @Nullable ReadableMap options, Promise promise) {
+    final Activity activity = getCurrentActivity();
+    RNInAppBrowser.getInstance().open(this.reactContext, options, promise, activity, url);
+  }
 
-        if (currentActivity != null) {
-            customTabsIntent.launchUrl(currentActivity, Uri.parse(url));
-        }
-    }
+  @ReactMethod
+  public void close() {
+    RNInAppBrowser.getInstance().close();
+  }
 
+  @ReactMethod
+  public void isAvailable(final Promise promise) {
+    RNInAppBrowser.getInstance().isAvailable(this.reactContext, promise);
+  }
 
-    @ReactMethod
-    public void close() {
-        if (currentActivity != null) {
-            currentActivity.finish();
-            currentActivity = null;
-            promise.resolve("dismiss");
-        }
-    }
+  public static void onStart(final Activity activity) {
+    RNInAppBrowser.getInstance().onStart(activity);
+  }
 
-    @Override
-    public void onHostDestroy() {
-        if (promise != null) {
-            promise.resolve("close");
-        }
-    }
+  @ReactMethod
+  public void warmup(final Promise promise) {
+    RNInAppBrowser.getInstance().warmup(promise);
+  }
 
-    @Override
-    public void onHostResume() {
-    }
+  @ReactMethod
+  public void mayLaunchUrl(final String mostLikelyUrl, final ReadableArray otherUrls) {
+    RNInAppBrowser.getInstance().mayLaunchUrl(mostLikelyUrl, otherUrls);
+  }
 
-    @Override
-    public void onHostPause() {
-    }
 }
