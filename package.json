@@ -1,7 +1,7 @@
 {
   "name": "rtn-custom-app-browser",
   "version": "0.0.1",
-  "description": "Open Browser with Turbo Native Modules",
+  "description": "Open Browser with Turbo Native API",
   "react-native": "js/index",
   "source": "js/index",
   "files": [
